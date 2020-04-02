@@ -9,12 +9,16 @@ import {
   BackHandler,
   Dimensions,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 
 import colors from '../constants/colors';
 import WebView from 'react-native-webview';
 import backArrow from './../assets/images/backArrow.png';
-import { SearchAndImport } from '../helpers/GoogleTakeOutAutoImport';
+import {
+  SearchAndImport,
+  SaveTakeoutFile,
+} from '../helpers/GoogleTakeOutAutoImport';
 import languages from './../locales/languages';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -77,6 +81,17 @@ class ImportScreen extends Component {
                   'https://takeout.google.com/settings/takeout/custom/location_history',
               }}
               onLoad={() => this.hideSpinner()}
+              // capture download url on ios
+              onShouldStartLoadWithRequest={event => {
+                if (
+                  Platform.OS === 'ios' &&
+                  event.url.includes('apidata.googleusercontent')
+                ) {
+                  SaveTakeoutFile(event.url);
+                  return false;
+                }
+                return true;
+              }}
               style={{ marginTop: 15 }}
             />
             {this.state.visible && (
