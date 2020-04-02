@@ -52,7 +52,7 @@ function GetFileName() {
 export function SaveTakeoutFile(path) {
   RNFS.mkdir(downloadDir)
     .then(result => {
-      console.log('The directory created in AppDate for ios ', downloadDir);
+      console.log('The directory created in AppData for ios ', downloadDir);
     })
     .catch(err => {
       console.warn('err', err);
